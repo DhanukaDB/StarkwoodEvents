@@ -2960,18 +2960,14 @@ export function ContactForm({ phone, email }: { phone: string; email: string }) 
 }
 ```
 
-Note: `validateContactForm` is imported here even though it's not called directly in this file's JSX logic — remove the unused import if your editor flags it; the client-visible validation errors come from `state.errors`, which the Server Action populates using the same `validateContactForm` function, guaranteeing client and server agree on what "valid" means without duplicating the rules.
+Note: `components/contact-form.tsx` does not import `validateContactForm` directly — it only reads validation errors from `state.errors`, which the Server Action (`actions.ts`) populates by calling `validateContactForm`. This keeps client and server agreeing on what "valid" means from one function, without the client component needing to import validation logic it never calls.
 
-- [ ] **Step 7: Fix the unused import**
-
-Remove the `import { validateContactForm } from "@/lib/validate-contact-form";` line from `components/contact-form.tsx` — it isn't used there (only in `actions.ts`).
-
-- [ ] **Step 8: Run tests to verify they pass**
+- [ ] **Step 7: Run tests to verify they pass**
 
 Run: `npm run test`
 Expected: passes. If `useActionState` behaves differently under RTL/jsdom (no real server round-trip), the test may need the mock adjusted so `sendContactMessage` resolves to an error state synchronously — if so, mock it to return `Promise.resolve({ status: "error", errors: { message: "Please enter a message." } })` and assert on that instead of relying on the real validator running through the mocked action.
 
-- [ ] **Step 9: Implement `app/contact/page.tsx`**
+- [ ] **Step 8: Implement `app/contact/page.tsx`**
 
 ```tsx
 import { ContactForm } from "@/components/contact-form";
@@ -3008,12 +3004,12 @@ export default async function ContactPage() {
 }
 ```
 
-- [ ] **Step 10: Verify build**
+- [ ] **Step 9: Verify build**
 
 Run: `npm run build`
 Expected: succeeds.
 
-- [ ] **Step 11: Commit**
+- [ ] **Step 10: Commit**
 
 ```bash
 git add -A
