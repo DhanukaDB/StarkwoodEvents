@@ -60,3 +60,10 @@ export const siteSettingsQuery = groq`
     phone, email, address, facebookUrl, instagramUrl, heroHeadline, heroSubheadline
   }
 `;
+
+export const eventGalleriesQuery = groq`
+  *[_type == "event" && count(gallery) > 0] | order(startDate desc) {
+    title, "slug": slug.current,
+    "imageUrls": gallery[].asset->url
+  }
+`;
