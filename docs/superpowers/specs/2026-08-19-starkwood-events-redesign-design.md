@@ -56,8 +56,8 @@ should reflect that.
 ## Site structure
 
 - `/` — Home: hero (rotating event photography), brief intro, services
-  overview, upcoming events preview, gallery highlights, testimonials,
-  sponsor logos, contact CTA.
+  overview, upcoming events preview, **past projects showcase**, gallery
+  highlights, testimonials, sponsor logos, contact CTA.
 - `/events` — Full events list (upcoming + past), filterable by category
   (Concerts, Pageants, Corporate, Expos, etc).
 - `/events/[slug]` — Individual event page: date, venue, description, photo
@@ -85,21 +85,59 @@ should reflect that.
 
 ### Seed content for launch
 
-- Upcoming event: **Naadha Gama Melbourne 2026**
-  - Venue: Sidney Myer Music Bowl, Melbourne
+#### Upcoming
+
+- **Naadha Gama Melbourne 2026**
+  - Date: **31 October 2026**
+  - Venue: Sidney Myer Music Bowl, Melbourne (venue partner: Arts Centre
+    Melbourne)
   - Info URL: https://naadhagama.lk/melbourne26
   - Description: reimagined live concert extension of the "Naadha Gama 360"
     experience with Eshan Denipitiya and The Orchestra of Eshan Denipitiya,
     featuring Methun SK, Ridma Weerawardena, Dhanith Sri, Supun Perera,
     Dinesh Gamage, Kanchana Anuradhi, and Manuranga Wijesekara. Billed as
     "a new chapter for Sri Lankan music in Australia."
-  - Date: not published on the source page yet — enter via Studio once
-    confirmed (do not guess a date).
-  - Tickets: sold via Ticketek (link on the event's own page, not scraped
-    here).
-- Photo gallery seeded from the `Imgs/` folder provided (concert, pageant,
-  team, expo booth photos) once existing partnership claims (e.g.
-  Unforgettable Sri Lanka) are stripped out of any captions.
+  - Starkwood role: Production Partner. Other partners: Maaz Events, Mega
+    Live Events, My Flight Zone, Sanni 18, Ticketek Australia (ticketing),
+    Shawn Mendis Lawyers (legal), Aus News Lanka (online).
+  - Tickets: via Ticketek —
+    premier.ticketek.com.au/shows/show.aspx?sh=NGAPLVSM26
+
+#### Past projects
+
+- **Dhwani (ධ්වනි) Live in Concert 2025** — Melbourne, 7–9 Nov 2025, The Besen
+  Centre. Starkwood role: Production (Production Manager: Buddhika
+  Jayasinghe). Producers: Awakasha Entertainment. Artists: Ridma
+  Weerasinghe/DW, Amandya Uthpalie, Raween Kanishka, Dhanith Sri. Full crew
+  (band, audio, lighting, photography) available from the Instagram posts if
+  useful for an "our team" style credit block.
+- **Sarith Surith and the News x Hana Shafa — Live in Melbourne** — 14 Nov
+  2025, Melbourne Pavilion. Starkwood role: Event Production (Event
+  Director: Buddhika Jayasinghe). Executive Producers: A9 Events, Stereo 6
+  Events, South Aura Events.
+- **Home Lands Prestige Night 2025** — Melbourne, 28 Oct 2025, Springvale
+  City Hall. Great Gatsby / vintage theme, with Home Lands Australia.
+- **News Live on Tour 2025 — Melbourne** — 12 Oct 2025.
+- **Aluth Kalawak — Melbourne Edition** — 13 Oct 2023, Trak Live Lounge Bar.
+  Starkwood role: Production Managed. Organized by 7 Zone Entertainment &
+  Nexxt Entertainment; presented by Janith Perera & ShowUp Global. Lineup:
+  IRAJ, Bathiya and Santhush (BNS), Ashanthi de Alwis, Sureni, 6th Lane,
+  FillT, Romesh Sugathapala, Centigradz, Randhir Witana, La Signore. Band:
+  Midlane. DJ: Rush Thambawita. Compere: Wasantha Duggannarala. This is the
+  event pictured in `Imgs/concert.jpg` (the Starkwood logo is visible in the
+  on-screen sponsor row) — use that photo as its cover image.
+- **Ru Sanda Rae Finale Tour — Australian Tour 2024** — Melbourne, Palais
+  Theatre, St Kilda, ~Sept 2024. Lineup: Rookantha, Chandralekha, Raini,
+  Windy, Sanuka, Suresh. Legal Partner: Shawn Mendis Lawyers. **No first-party
+  Starkwood photos of this event were found** — the only images located were
+  third-party news photography (SNNI/"What's Doing In Melbourne"), which
+  should not be reused on the site. Dhanuka to supply Starkwood's own photos
+  for this entry before launch, or launch it as a text-only past-project
+  entry until photos are available.
+
+Photo gallery for the other seed events is drawn from the `Imgs/` folder
+provided, once existing partnership claims (e.g. Unforgettable Sri Lanka) are
+stripped out of any captions.
 
 ## Architecture
 
