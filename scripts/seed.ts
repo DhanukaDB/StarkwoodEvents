@@ -1,4 +1,5 @@
-import "dotenv/config";
+import { config } from "dotenv";
+config({ path: ".env.local" });
 import { createClient } from "@sanity/client";
 import { readFileSync } from "fs";
 import { join } from "path";
