@@ -77,7 +77,11 @@ should reflect that.
 
 - **Event** — title, slug, date/date range, venue, category, cover image,
   photo gallery, rich-text description, status (upcoming/past), linked
-  sponsors, external ticket/info URL (optional).
+  sponsors, external ticket/info URL (optional). Event pages show headline
+  info only (artists, venue, date, Starkwood's role, key partners) — not
+  full crew/credit lists (band members, engineers, individual
+  photographers), to keep pages clean and premium-feeling rather than dense
+  credit blocks.
 - **Testimonial** — quote, author, role/company.
 - **Sponsor/Partner** — name, logo, link.
 - **Service** — title, icon, description.
