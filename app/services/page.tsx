@@ -1,17 +1,12 @@
 import Link from "next/link";
-import { sanityFetch } from "@/sanity/client";
+import { safeFetch } from "@/sanity/client";
 import { servicesQuery } from "@/lib/queries";
 import type { Service } from "@/lib/types";
 
 export const metadata = { title: "Services | Starkwood Events" };
 
 export default async function ServicesPage() {
-  let services: Service[] = [];
-  try {
-    services = await sanityFetch<Service[]>({ query: servicesQuery, tags: ["service"] });
-  } catch {
-    services = [];
-  }
+  const services = await safeFetch<Service[]>(servicesQuery, "service", []);
 
   return (
     <main className="mx-auto max-w-6xl px-6 py-16">

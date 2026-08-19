@@ -1,27 +1,20 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { PortableText, type PortableTextBlock } from "@portabletext/react";
-import { sanityFetch } from "@/sanity/client";
+import { safeFetch } from "@/sanity/client";
 import { eventBySlugQuery, eventSlugsQuery } from "@/lib/queries";
 import { formatEventDate } from "@/lib/format-date";
+import { urlFor } from "@/sanity/image";
 import type { EventDetail } from "@/lib/types";
 
 export async function generateStaticParams() {
-  try {
-    const slugs = await sanityFetch<string[]>({ query: eventSlugsQuery, tags: ["event"] });
-    return slugs.map((slug) => ({ slug }));
-  } catch {
-    return [];
-  }
+  const slugs = await safeFetch<string[]>(eventSlugsQuery, "event", []);
+  return slugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const event = await sanityFetch<EventDetail | null>({
-    query: eventBySlugQuery,
-    params: { slug },
-    tags: ["event"],
-  });
+  const event = await safeFetch<EventDetail | null>(eventBySlugQuery, "event", null, { slug });
   if (!event) return {};
   return { title: `${event.title} | Starkwood Events` };
 }
@@ -32,19 +25,21 @@ export default async function EventDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const event = await sanityFetch<EventDetail | null>({
-    query: eventBySlugQuery,
-    params: { slug },
-    tags: ["event"],
-  });
+  const event = await safeFetch<EventDetail | null>(eventBySlugQuery, "event", null, { slug });
 
   if (!event) notFound();
 
+  // Prefer the raw Sanity image object so we can request a capped, optimized
+  // width via the image CDN instead of shipping the full-size original.
+  const coverSrc = event.coverImage
+    ? urlFor(event.coverImage).width(1200).auto("format").url()
+    : event.coverImageUrl;
+
   return (
     <main className="mx-auto max-w-4xl px-6 py-16">
-      {event.coverImageUrl && (
+      {coverSrc && (
         <div className="relative mb-8 aspect-video w-full overflow-hidden rounded-lg">
-          <Image src={event.coverImageUrl} alt={event.title} fill className="object-cover" />
+          <Image src={coverSrc} alt={event.title} fill sizes="100vw" className="object-cover" />
         </div>
       )}
       <h1 className="font-display text-4xl text-[var(--foreground)]">{event.title}</h1>
@@ -66,7 +61,13 @@ export default async function EventDetailPage({
         <div className="mt-10 grid grid-cols-2 gap-4 md:grid-cols-3">
           {event.galleryUrls.map((url, i) => (
             <div key={url} className="relative aspect-square overflow-hidden rounded-lg">
-              <Image src={url} alt={`${event.title} photo ${i + 1}`} fill className="object-cover" />
+              <Image
+                src={url}
+                alt={`${event.title} photo ${i + 1}`}
+                fill
+                sizes="(max-width: 768px) 50vw, 33vw"
+                className="object-cover"
+              />
             </div>
           ))}
         </div>
@@ -75,6 +76,8 @@ export default async function EventDetailPage({
         {event.ticketUrl && (
           <a
             href={event.ticketUrl}
+            target="_blank"
+            rel="noopener noreferrer"
             className="rounded-md bg-[var(--accent)] px-6 py-3 text-sm font-medium text-[var(--accent-foreground)]"
           >
             Get tickets
@@ -83,6 +86,8 @@ export default async function EventDetailPage({
         {event.infoUrl && (
           <a
             href={event.infoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
             className="rounded-md border border-[var(--border)] px-6 py-3 text-sm text-[var(--foreground)]"
           >
             More info

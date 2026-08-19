@@ -20,7 +20,13 @@ export default function AboutPage() {
         production discipline to every scale of event.
       </p>
       <div className="relative mt-10 aspect-video w-full overflow-hidden rounded-lg">
-        <Image src="/team.jpg" alt="The Starkwood Events team" fill className="object-cover" />
+        <Image
+          src="/team.jpg"
+          alt="The Starkwood Events team"
+          fill
+          sizes="100vw"
+          className="object-cover"
+        />
       </div>
     </main>
   );

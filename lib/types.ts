@@ -1,3 +1,5 @@
+import type { SanityImageSource } from "@sanity/image-url";
+
 export interface EventSummary {
   _id: string;
   title: string;
@@ -7,6 +9,8 @@ export interface EventSummary {
   endDate?: string;
   summary?: string;
   coverImageUrl?: string;
+  /** Raw Sanity image object — pass through `urlFor()` for an optimized, sized URL. */
+  coverImage?: SanityImageSource;
   status: "upcoming" | "past";
 }
 

@@ -15,7 +15,7 @@ export const sponsor = defineType({
       name: "logo",
       title: "Logo",
       type: "image",
-      validation: (r) => r.required(),
+      description: "Optional — sponsors without a logo yet render as a text name on the site.",
     }),
     defineField({ name: "url", title: "URL", type: "url" }),
   ],

@@ -1,24 +1,18 @@
 import { notFound } from "next/navigation";
 import { PortableText, type PortableTextBlock } from "@portabletext/react";
-import { sanityFetch } from "@/sanity/client";
+import { safeFetch } from "@/sanity/client";
 import { serviceBySlugQuery, serviceSlugsQuery } from "@/lib/queries";
 import type { ServiceDetail } from "@/lib/types";
 
 export async function generateStaticParams() {
-  try {
-    const slugs = await sanityFetch<string[]>({ query: serviceSlugsQuery, tags: ["service"] });
-    return slugs.map((slug) => ({ slug }));
-  } catch {
-    return [];
-  }
+  const slugs = await safeFetch<string[]>(serviceSlugsQuery, "service", []);
+  return slugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const service = await sanityFetch<ServiceDetail | null>({
-    query: serviceBySlugQuery,
-    params: { slug },
-    tags: ["service"],
+  const service = await safeFetch<ServiceDetail | null>(serviceBySlugQuery, "service", null, {
+    slug,
   });
   if (!service) return {};
   return { title: `${service.title} | Starkwood Events` };
@@ -30,10 +24,8 @@ export default async function ServiceDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const service = await sanityFetch<ServiceDetail | null>({
-    query: serviceBySlugQuery,
-    params: { slug },
-    tags: ["service"],
+  const service = await safeFetch<ServiceDetail | null>(serviceBySlugQuery, "service", null, {
+    slug,
   });
 
   if (!service) notFound();

@@ -3,21 +3,24 @@ import { groq } from "next-sanity";
 export const upcomingEventsQuery = groq`
   *[_type == "event" && status == "upcoming"] | order(startDate asc) {
     _id, title, "slug": slug.current, venue, startDate, endDate, summary, status,
-    "coverImageUrl": coverImage.asset->url
+    "coverImageUrl": coverImage.asset->url,
+    coverImage
   }
 `;
 
 export const pastEventsQuery = groq`
   *[_type == "event" && status == "past"] | order(startDate desc) {
     _id, title, "slug": slug.current, venue, startDate, endDate, summary, status,
-    "coverImageUrl": coverImage.asset->url
+    "coverImageUrl": coverImage.asset->url,
+    coverImage
   }
 `;
 
 export const allEventsQuery = groq`
   *[_type == "event"] | order(startDate desc) {
     _id, title, "slug": slug.current, venue, startDate, endDate, summary, status, category,
-    "coverImageUrl": coverImage.asset->url
+    "coverImageUrl": coverImage.asset->url,
+    coverImage
   }
 `;
 
@@ -26,6 +29,7 @@ export const eventBySlugQuery = groq`
     _id, title, "slug": slug.current, venue, startDate, endDate, summary, status, category,
     starkwoodRole, description, infoUrl, ticketUrl,
     "coverImageUrl": coverImage.asset->url,
+    coverImage,
     "galleryUrls": gallery[].asset->url,
     "sponsors": sponsors[]-> { _id, name, "logoUrl": logo.asset->url, url }
   }

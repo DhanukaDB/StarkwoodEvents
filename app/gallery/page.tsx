@@ -1,19 +1,11 @@
 import { GalleryGrid, type GalleryGroup } from "@/components/gallery/gallery-grid";
-import { sanityFetch } from "@/sanity/client";
+import { safeFetch } from "@/sanity/client";
 import { eventGalleriesQuery } from "@/lib/queries";
 
 export const metadata = { title: "Gallery | Starkwood Events" };
 
 export default async function GalleryPage() {
-  let groups: GalleryGroup[] = [];
-  try {
-    groups = await sanityFetch<GalleryGroup[]>({
-      query: eventGalleriesQuery,
-      tags: ["event"],
-    });
-  } catch {
-    groups = [];
-  }
+  const groups = await safeFetch<GalleryGroup[]>(eventGalleriesQuery, "event", []);
 
   return (
     <main className="mx-auto max-w-6xl px-6 py-16">

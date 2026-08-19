@@ -1,17 +1,16 @@
 import { EventsExplorer } from "@/components/events/events-explorer";
-import { sanityFetch } from "@/sanity/client";
+import { safeFetch } from "@/sanity/client";
 import { allEventsQuery } from "@/lib/queries";
 import type { EventSummary } from "@/lib/types";
 
 export const metadata = { title: "Events | Starkwood Events" };
 
 export default async function EventsPage() {
-  let events: (EventSummary & { category?: string })[] = [];
-  try {
-    events = await sanityFetch({ query: allEventsQuery, tags: ["event"] });
-  } catch {
-    events = [];
-  }
+  const events = await safeFetch<(EventSummary & { category?: string })[]>(
+    allEventsQuery,
+    "event",
+    [],
+  );
 
   return (
     <main className="mx-auto max-w-6xl px-6 py-16">

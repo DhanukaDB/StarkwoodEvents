@@ -16,7 +16,11 @@ export function SponsorLogos({ sponsors }: { sponsors: Sponsor[] }) {
               height={48}
               className="h-10 w-auto object-contain grayscale transition hover:grayscale-0"
             />
-          ) : null,
+          ) : (
+            <span key={s._id} className="text-sm text-[var(--muted-foreground)]">
+              {s.name}
+            </span>
+          ),
         )}
       </div>
     </section>

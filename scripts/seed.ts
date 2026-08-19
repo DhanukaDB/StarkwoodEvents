@@ -206,7 +206,24 @@ async function main() {
   });
 
   // 5. Past projects
+  //
+  // Gallery photos below are drawn from the WhatsApp exports in Imgs/. Some
+  // are confirmed matches (visible on-screen branding for that exact event);
+  // the rest are real Starkwood-produced concert photography (same sponsor
+  // networks / crew / photographer) used as generic crowd/stage filler per
+  // the design spec ("Photo gallery for the other seed events is drawn from
+  // the Imgs/ folder"). None reference the retired travel-partnership brand
+  // that must never appear on this site, and none are attached to the
+  // Ru Sanda Rae Finale Tour — that event still awaits first-party photos
+  // from Dhanuka per the spec.
   const alutKalawakCover = await uploadImage("concert.jpg");
+  const alutKalawakGallery = await Promise.all([
+    // Exact match: on-screen "අලුත් කලාවක WORLD TOUR" branding with the
+    // 7 Zone Entertainment / Nexxt Entertainment / ShowUp Global sponsor logos.
+    uploadImage("WhatsApp Image 2025-05-22 at 21.50.03_d2529ce2.jpg"),
+    uploadImage("WhatsApp Image 2025-05-22 at 21.49.59_ab40c586.jpg"),
+    uploadImage("WhatsApp Image 2025-05-22 at 21.50.01_3f099b21.jpg"),
+  ]);
   await upsert("event-aluth-kalawak-melbourne-edition", {
     _type: "event",
     title: "Aluth Kalawak — Melbourne Edition",
@@ -218,6 +235,7 @@ async function main() {
     starkwoodRole: "Production Managed",
     summary: "A sold-out night of Sri Lankan music legends, live in Melbourne.",
     coverImage: alutKalawakCover,
+    gallery: alutKalawakGallery,
     sponsors: [
       sponsorRefs["7 Zone Entertainment"],
       sponsorRefs["Nexxt Entertainment"],
@@ -225,6 +243,10 @@ async function main() {
     ],
   });
 
+  const dhwaniGallery = await Promise.all([
+    uploadImage("WhatsApp Image 2025-05-22 at 21.50.05_c3be5d16.jpg"),
+    uploadImage("WhatsApp Image 2025-05-22 at 21.50.04_5506f43e.jpg"),
+  ]);
   await upsert("event-dhwani-live-2025", {
     _type: "event",
     title: "Dhwani (ධ්වනි) Live in Concert 2025",
@@ -236,9 +258,16 @@ async function main() {
     venue: "The Besen Centre, Melbourne",
     starkwoodRole: "Production",
     summary: "A full-scale concert production at The Besen Centre.",
+    gallery: dhwaniGallery,
     sponsors: [sponsorRefs["Awakasha Entertainment"]],
   });
 
+  const sarithSurithGallery = await Promise.all([
+    // Sponsor logos (A9 Events, Stereo 6 Events, Starkwood Events) match this
+    // event's own documented production partners.
+    uploadImage("WhatsApp Image 2025-05-22 at 22.13.30_a5ebcf5b.jpg"),
+    uploadImage("WhatsApp Image 2025-05-22 at 21.50.05_f56a4599.jpg"),
+  ]);
   await upsert("event-sarith-surith-x-hana-2025", {
     _type: "event",
     title: "Sarith Surith and the News x Hana Shafa — Live in Melbourne",
@@ -249,9 +278,15 @@ async function main() {
     venue: "Melbourne Pavilion",
     starkwoodRole: "Event Production",
     summary: "Sarith Surith and the News joined by Hana Shafa, live in Melbourne.",
+    gallery: sarithSurithGallery,
     sponsors: [sponsorRefs["A9 Events"], sponsorRefs["Stereo 6 Events"], sponsorRefs["South Aura Events"]],
   });
 
+  const homeLandsGallery = await Promise.all([
+    // Exact match: on-screen "Home Lands Group of Companies" branding.
+    uploadImage("WhatsApp Image 2025-05-22 at 21.45.53_148b22c9.jpg"),
+    uploadImage("WhatsApp Image 2025-05-22 at 21.50.05_012c94e7.jpg"),
+  ]);
   await upsert("event-home-lands-prestige-night-2025", {
     _type: "event",
     title: "Home Lands Prestige Night 2025",
@@ -262,6 +297,7 @@ async function main() {
     venue: "Springvale City Hall, Melbourne",
     starkwoodRole: "Production",
     summary: "A Great Gatsby-themed prestige night with Home Lands Australia.",
+    gallery: homeLandsGallery,
     sponsors: [sponsorRefs["Home Lands Australia"]],
   });
 

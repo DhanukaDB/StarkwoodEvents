@@ -5,7 +5,7 @@ import { PastProjectsSection } from "@/components/home/past-projects-section";
 import { TestimonialsSection } from "@/components/home/testimonials-section";
 import { SponsorLogos } from "@/components/home/sponsor-logos";
 import { ContactCta } from "@/components/home/contact-cta";
-import { sanityFetch } from "@/sanity/client";
+import { safeFetch } from "@/sanity/client";
 import {
   upcomingEventsQuery,
   pastEventsQuery,
@@ -15,14 +15,6 @@ import {
   siteSettingsQuery,
 } from "@/lib/queries";
 import type { EventSummary, Service, Testimonial, Sponsor, SiteSettings } from "@/lib/types";
-
-async function safeFetch<T>(query: string, tag: string, fallback: T): Promise<T> {
-  try {
-    return await sanityFetch<T>({ query, tags: [tag] });
-  } catch {
-    return fallback;
-  }
-}
 
 export default async function HomePage() {
   const [upcoming, past, services, testimonials, sponsors, settings] = await Promise.all([

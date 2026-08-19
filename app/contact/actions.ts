@@ -28,7 +28,11 @@ export async function sendContactMessage(
   try {
     const resend = new Resend(process.env.RESEND_API_KEY);
     await resend.emails.send({
-      from: "Starkwood Events Website <onboarding@resend.dev>",
+      // CONTACT_FROM_EMAIL must be a verified sender domain in Resend (e.g.
+      // website@starkwood.au). The onboarding@resend.dev sandbox fallback can
+      // only deliver to the Resend account owner's own verified address, so
+      // mail to a real recipient like events@starkwood.au will be rejected.
+      from: `Starkwood Events <${process.env.CONTACT_FROM_EMAIL || "onboarding@resend.dev"}>`,
       to: process.env.CONTACT_TO_EMAIL || DEFAULT_EMAIL,
       replyTo: input.email,
       subject: `New enquiry from ${input.name}`,

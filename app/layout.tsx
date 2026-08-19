@@ -2,7 +2,7 @@ import "./globals.css";
 import { Playfair_Display, Inter } from "next/font/google";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
-import { sanityFetch } from "@/sanity/client";
+import { safeFetch } from "@/sanity/client";
 import { siteSettingsQuery } from "@/lib/queries";
 import type { SiteSettings } from "@/lib/types";
 import {
@@ -29,15 +29,11 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
-  let settings: SiteSettings | null = null;
-  try {
-    settings = await sanityFetch<SiteSettings>({
-      query: siteSettingsQuery,
-      tags: ["siteSettings"],
-    });
-  } catch {
-    settings = null;
-  }
+  const settings = await safeFetch<SiteSettings | null>(
+    siteSettingsQuery,
+    "siteSettings",
+    null,
+  );
 
   const phone = settings?.phone || DEFAULT_PHONE;
   const email = settings?.email || DEFAULT_EMAIL;

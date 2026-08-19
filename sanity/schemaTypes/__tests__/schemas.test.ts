@@ -1,6 +1,22 @@
 import { describe, it, expect } from "vitest";
 import { schemaTypes } from "../index";
 
+/** Narrow shape shared by the `document`-type schemas under test — enough
+ * to read field names without depending on Sanity's full (and very large)
+ * discriminated `SchemaTypeDefinition` union. */
+interface DocumentSchemaShape {
+  name: string;
+  fields: { name: string }[];
+}
+
+function findDocumentSchema(name: string): DocumentSchemaShape {
+  const schema = schemaTypes.find((s) => s.name === name);
+  if (!schema || !("fields" in schema)) {
+    throw new Error(`Expected schema "${name}" to be a document type with fields`);
+  }
+  return schema as DocumentSchemaShape;
+}
+
 describe("sanity schemaTypes", () => {
   it("exports exactly the five expected document types", () => {
     const names = schemaTypes.map((s) => s.name).sort();
@@ -10,8 +26,8 @@ describe("sanity schemaTypes", () => {
   });
 
   it("event schema requires title, slug, and status", () => {
-    const eventSchema = schemaTypes.find((s) => s.name === "event")!;
-    const fieldNames = (eventSchema as any).fields.map((f: any) => f.name);
+    const eventSchema = findDocumentSchema("event");
+    const fieldNames = eventSchema.fields.map((f) => f.name);
     expect(fieldNames).toEqual(
       expect.arrayContaining([
         "title",
@@ -30,8 +46,8 @@ describe("sanity schemaTypes", () => {
   });
 
   it("service schema has slug and order fields for routing/sorting", () => {
-    const serviceSchema = schemaTypes.find((s) => s.name === "service")!;
-    const fieldNames = (serviceSchema as any).fields.map((f: any) => f.name);
+    const serviceSchema = findDocumentSchema("service");
+    const fieldNames = serviceSchema.fields.map((f) => f.name);
     expect(fieldNames).toEqual(expect.arrayContaining(["slug", "order"]));
   });
 });

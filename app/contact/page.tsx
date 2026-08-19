@@ -1,5 +1,5 @@
 import { ContactForm } from "@/components/contact-form";
-import { sanityFetch } from "@/sanity/client";
+import { safeFetch } from "@/sanity/client";
 import { siteSettingsQuery } from "@/lib/queries";
 import type { SiteSettings } from "@/lib/types";
 import { DEFAULT_PHONE, DEFAULT_EMAIL, DEFAULT_ADDRESS } from "@/lib/site-config";
@@ -7,12 +7,7 @@ import { DEFAULT_PHONE, DEFAULT_EMAIL, DEFAULT_ADDRESS } from "@/lib/site-config
 export const metadata = { title: "Contact | Starkwood Events" };
 
 export default async function ContactPage() {
-  let settings: SiteSettings | null = null;
-  try {
-    settings = await sanityFetch<SiteSettings>({ query: siteSettingsQuery, tags: ["siteSettings"] });
-  } catch {
-    settings = null;
-  }
+  const settings = await safeFetch<SiteSettings | null>(siteSettingsQuery, "siteSettings", null);
 
   const phone = settings?.phone || DEFAULT_PHONE;
   const email = settings?.email || DEFAULT_EMAIL;

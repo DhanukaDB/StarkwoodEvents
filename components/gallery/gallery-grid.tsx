@@ -30,6 +30,7 @@ export function GalleryGrid({ groups }: { groups: GalleryGroup[] }) {
                   src={url}
                   alt={`${group.title} photo ${i + 1}`}
                   fill
+                  sizes="(max-width: 768px) 50vw, 25vw"
                   className="object-cover"
                 />
               </div>
