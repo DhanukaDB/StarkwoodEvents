@@ -21,10 +21,10 @@ export interface EventDetail extends EventSummary {
   category?: string;
   starkwoodRole?: string;
   description?: unknown[]; // Portable Text blocks
-  galleryUrls: string[];
+  galleryUrls?: string[];
   infoUrl?: string;
   ticketUrl?: string;
-  sponsors: SponsorRef[];
+  sponsors?: SponsorRef[];
 }
 
 export interface Service {
