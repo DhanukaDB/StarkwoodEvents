@@ -1,5 +1,5 @@
 import "./globals.css";
-import { Playfair_Display, Inter } from "next/font/google";
+import { Syne, Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { safeFetch } from "@/sanity/client";
@@ -13,14 +13,22 @@ import {
   DEFAULT_INSTAGRAM_URL,
 } from "@/lib/site-config";
 
-const playfair = Playfair_Display({
+const syne = Syne({
   subsets: ["latin"],
+  weight: ["600", "700", "800"],
   variable: "--font-display",
 });
 
-const inter = Inter({
+const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
   variable: "--font-body",
+});
+
+const jetBrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-mono-num",
 });
 
 export const metadata = {
@@ -44,7 +52,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${playfair.variable} ${inter.variable} h-full antialiased`}
+      className={`${syne.variable} ${plusJakartaSans.variable} ${jetBrainsMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <SiteHeader phone={phone} />

@@ -1,46 +1,52 @@
 import { Hero } from "@/components/home/hero";
 import { ServicesTeaser } from "@/components/home/services-teaser";
 import { UpcomingEventsSection } from "@/components/home/upcoming-events-section";
+import { RunSheet } from "@/components/home/run-sheet";
+import { Stats } from "@/components/home/stats";
 import { PastProjectsSection } from "@/components/home/past-projects-section";
-import { TestimonialsSection } from "@/components/home/testimonials-section";
-import { SponsorLogos } from "@/components/home/sponsor-logos";
 import { ContactCta } from "@/components/home/contact-cta";
 import { safeFetch } from "@/sanity/client";
 import {
   upcomingEventsQuery,
   pastEventsQuery,
+  allEventsQuery,
   servicesQuery,
-  testimonialsQuery,
-  sponsorsQuery,
   siteSettingsQuery,
 } from "@/lib/queries";
-import type { EventSummary, Service, Testimonial, Sponsor, SiteSettings } from "@/lib/types";
+import type { EventSummary, Service, SiteSettings } from "@/lib/types";
+import { DEFAULT_PHONE, DEFAULT_EMAIL } from "@/lib/site-config";
 
 export default async function HomePage() {
-  const [upcoming, past, services, testimonials, sponsors, settings] = await Promise.all([
+  const [upcoming, past, allEvents, services, settings] = await Promise.all([
     safeFetch<EventSummary[]>(upcomingEventsQuery, "event", []),
     safeFetch<EventSummary[]>(pastEventsQuery, "event", []),
+    safeFetch<(EventSummary & { category?: string })[]>(allEventsQuery, "event", []),
     safeFetch<Service[]>(servicesQuery, "service", []),
-    safeFetch<Testimonial[]>(testimonialsQuery, "testimonial", []),
-    safeFetch<Sponsor[]>(sponsorsQuery, "sponsor", []),
     safeFetch<SiteSettings | null>(siteSettingsQuery, "siteSettings", null),
   ]);
+
+  const phone = settings?.phone || DEFAULT_PHONE;
+  const email = settings?.email || DEFAULT_EMAIL;
 
   return (
     <main>
       <Hero
-        headline={settings?.heroHeadline || "Full-Scale Events. Flawlessly Produced."}
+        headline={
+          settings?.heroHeadline || "We plan and run the events\nAustralia turns up for."
+        }
         subheadline={
           settings?.heroSubheadline ||
-          "From arena concerts to cultural galas, Starkwood Events brings Melbourne's biggest nights to life."
+          "Starkwood is a Melbourne event management company. Full-service planning and production: concept, permits, suppliers, run sheets and on-the-day delivery for weddings, corporate, sports, charity, cultural, community and live events."
         }
       />
+      <div className="relative -mt-16 sm:-mt-20">
+        <UpcomingEventsSection events={upcoming} />
+      </div>
       <ServicesTeaser services={services} />
-      <UpcomingEventsSection events={upcoming} />
+      <RunSheet events={allEvents} />
+      <Stats />
       <PastProjectsSection events={past} />
-      <TestimonialsSection testimonials={testimonials} />
-      <SponsorLogos sponsors={sponsors} />
-      <ContactCta />
+      <ContactCta phone={phone} email={email} />
     </main>
   );
 }

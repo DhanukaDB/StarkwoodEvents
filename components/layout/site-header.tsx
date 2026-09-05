@@ -17,54 +17,59 @@ export function SiteHeader({ phone }: { phone: string }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-[var(--border)] bg-[var(--background)]/95 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <Link
-          href="/"
-          aria-label="Starkwood"
-          className="font-display text-lg tracking-wide text-gradient-gold"
-        >
-          STARKWOOD EVENTS
+    <header className="sticky top-0 z-50 border-b border-white/[0.06] bg-background/85 backdrop-blur-md">
+      <div className="mx-auto flex h-20 max-w-6xl items-center justify-between px-6">
+        <Link href="/" aria-label="Starkwood" className="flex items-baseline gap-2 whitespace-nowrap">
+          <span className="font-display text-lg font-bold text-accent">Starkwood</span>
+          <span className="text-accent">·</span>
+          <span className="font-display text-[11px] font-semibold tracking-[0.2em] text-foreground/50">
+            EVENTS
+          </span>
         </Link>
-        <nav className="hidden gap-6 md:flex">
+
+        <nav className="hidden gap-7 md:flex">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm text-[var(--foreground)] transition hover:text-[var(--accent)]"
+              className="text-sm font-medium text-foreground/70 transition hover:text-foreground"
             >
               {link.label}
             </Link>
           ))}
         </nav>
-        <a
-          href={`tel:${phone.replace(/\s+/g, "")}`}
-          className="hidden text-sm text-[var(--accent)] md:block"
-        >
-          {phone}
-        </a>
+
+        <div className="hidden items-center gap-6 md:flex">
+          <a href={`tel:${phone.replace(/\s+/g, "")}`} className="text-sm text-accent-2 hover:text-accent">
+            {phone}
+          </a>
+          <Link
+            href="/contact"
+            className="rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground shadow-[0_10px_15px_rgba(197,139,56,0.35)] transition hover:brightness-110"
+          >
+            Plan your event
+          </Link>
+        </div>
+
         <button
           type="button"
           onClick={() => setOpen((prev) => !prev)}
           aria-expanded={open}
           aria-label={open ? "Close menu" : "Open menu"}
-          className="flex items-center justify-center rounded-md border border-[var(--border)] p-2 text-[var(--foreground)] transition hover:border-[var(--accent)] hover:text-[var(--accent)] md:hidden"
+          className="flex items-center justify-center rounded-full border border-white/10 p-2 text-foreground transition hover:border-accent hover:text-accent md:hidden"
         >
           {open ? <X className="size-5" /> : <Menu className="size-5" />}
         </button>
       </div>
       {open && (
-        <nav
-          className="border-t border-[var(--border)] bg-[var(--background)] px-6 py-4 md:hidden"
-          aria-label="Mobile"
-        >
+        <nav className="border-t border-white/[0.06] bg-background px-6 py-4 md:hidden" aria-label="Mobile">
           <div className="flex flex-col gap-1">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setOpen(false)}
-                className="rounded-md px-2 py-2 text-sm text-[var(--foreground)] transition hover:bg-[var(--card)] hover:text-[var(--accent)]"
+                className="rounded-md px-2 py-2 text-sm text-foreground transition hover:bg-card hover:text-accent"
               >
                 {link.label}
               </Link>
@@ -72,7 +77,7 @@ export function SiteHeader({ phone }: { phone: string }) {
             <a
               href={`tel:${phone.replace(/\s+/g, "")}`}
               onClick={() => setOpen(false)}
-              className="rounded-md px-2 py-2 text-sm text-[var(--accent)] transition hover:bg-[var(--card)]"
+              className="rounded-md px-2 py-2 text-sm text-accent-2 transition hover:bg-card"
             >
               {phone}
             </a>

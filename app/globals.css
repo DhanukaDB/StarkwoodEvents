@@ -7,9 +7,12 @@
 
 @theme inline {
   --color-background: var(--background);
+  --color-surface: var(--surface);
   --color-foreground: var(--foreground);
+  --color-accent-2: var(--accent-2);
   --font-sans: var(--font-body);
   --font-heading: var(--font-display);
+  --font-mono: var(--font-mono-num);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -49,15 +52,17 @@
 }
 
 :root {
-  --background: #0a0a0a;
-  --foreground: #f5f1e8;
-  --card: #141414;
-  --card-foreground: #f5f1e8;
-  --accent: #caa14b;
-  --accent-foreground: #0a0a0a;
-  --border: #2a2620;
-  --muted: #1a1a1a;
-  --muted-foreground: #b3ab99;
+  --background: #08080a;
+  --surface: #0b0b0e;
+  --foreground: #f5f5f0;
+  --card: #141419;
+  --card-foreground: #f5f5f0;
+  --accent: #c58b38;
+  --accent-2: #e5a244;
+  --accent-foreground: #08080a;
+  --border: rgba(255, 255, 255, 0.08);
+  --muted: #16161a;
+  --muted-foreground: rgba(245, 245, 240, 0.65);
   --primary: var(--accent);
   --primary-foreground: var(--accent-foreground);
   --secondary: var(--muted);
@@ -90,8 +95,16 @@
 }
 
 .text-gradient-gold {
-  background: linear-gradient(135deg, #caa14b 0%, #f4dfa1 100%);
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }

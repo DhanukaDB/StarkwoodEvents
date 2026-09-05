@@ -34,7 +34,7 @@ export function EventCard({
   return (
     <Link
       href={`/events/${slug}`}
-      className="group block overflow-hidden rounded-lg border border-[var(--border)] bg-[var(--card)] transition hover:border-[var(--accent)]"
+      className="group block overflow-hidden rounded-2xl border border-white/[0.08] bg-card/70 backdrop-blur-md transition hover:border-accent/40"
     >
       <div className="relative aspect-video w-full overflow-hidden">
         {imageSrc ? (
@@ -48,17 +48,17 @@ export function EventCard({
         ) : (
           <div
             data-testid="event-card-placeholder"
-            className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[var(--muted)] to-[var(--background)]"
+            className="flex h-full w-full items-center justify-center bg-gradient-to-br from-muted to-background"
           >
             <span className="font-display text-2xl text-gradient-gold">S</span>
           </div>
         )}
       </div>
       <div className="p-5">
-        <h3 className="font-display text-lg text-[var(--foreground)]">{title}</h3>
-        {venue && <p className="mt-1 text-sm text-[var(--muted-foreground)]">{venue}</p>}
-        <p className="mt-1 text-sm text-[var(--accent)]">{formatEventDate(startDate, endDate)}</p>
-        {summary && <p className="mt-2 text-sm text-[var(--muted-foreground)]">{summary}</p>}
+        <h3 className="font-display text-lg font-bold text-foreground">{title}</h3>
+        {venue && <p className="mt-1 text-sm text-muted-foreground">{venue}</p>}
+        <p className="mt-1 text-sm font-mono text-accent-2">{formatEventDate(startDate, endDate)}</p>
+        {summary && <p className="mt-2 text-sm text-muted-foreground">{summary}</p>}
       </div>
     </Link>
   );
