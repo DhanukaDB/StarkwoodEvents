@@ -1,11 +1,43 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import type { Service } from "@/lib/types";
 
+const SERVICE_IMAGES: Record<string, string> = {
+  weddings: "/images/services/weddings.jpg",
+  "corporate-events": "/images/services/corporate-events.jpg",
+  "music-events": "/images/services/music-events.jpg",
+  "charity-events": "/images/services/charity-events.jpg",
+  "sporting-events": "/images/services/sporting-events.jpg",
+  "food-wine-events": "/images/services/food-wine-events.jpg",
+  "community-events": "/images/services/community-events.jpg",
+};
+
+function ServiceBackground({ slug }: { slug: string }) {
+  const src = SERVICE_IMAGES[slug];
+  if (!src) return null;
+  return (
+    <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden rounded-[inherit]">
+      <Image src={src} alt="" fill className="object-cover opacity-20" />
+    </div>
+  );
+}
+
+// Figma's two large bento tiles use photography sized/cropped for that
+// larger treatment (weddings, music/event-planning) — the rest are sized
+// for the small tiles. Picking large-tile services by slug keeps that
+// pairing correct regardless of the CMS's own ordering.
+const LARGE_TILE_SLUGS = ["weddings", "music-events"];
+
 export function ServicesTeaser({ services }: { services: Service[] }) {
   if (services.length === 0) return null;
 
-  const [featured, large, ...rest] = services;
+  const large_tiles = LARGE_TILE_SLUGS.map((slug) =>
+    services.find((s) => s.slug === slug),
+  ).filter((s): s is Service => Boolean(s));
+  const [featured, large] =
+    large_tiles.length === 2 ? large_tiles : services.slice(0, 2);
+  const rest = services.filter((s) => s !== featured && s !== large);
 
   return (
     <section className="mx-auto max-w-6xl px-6 py-24">
@@ -25,8 +57,9 @@ export function ServicesTeaser({ services }: { services: Service[] }) {
       <div className="mt-12 grid gap-6 lg:grid-cols-2">
         <Link
           href={`/services/${featured.slug}`}
-          className="rounded-3xl border border-white/[0.08] bg-card/70 p-10 backdrop-blur-md transition hover:border-accent/40"
+          className="relative rounded-3xl border border-white/[0.08] bg-card/70 p-10 backdrop-blur-md transition hover:border-accent/40"
         >
+          <ServiceBackground slug={featured.slug} />
           <div className="flex size-12 items-center justify-center rounded-2xl bg-accent text-2xl">
             {featured.icon}
           </div>
@@ -47,8 +80,9 @@ export function ServicesTeaser({ services }: { services: Service[] }) {
         {large && (
           <Link
             href={`/services/${large.slug}`}
-            className="rounded-3xl border border-white/[0.08] bg-card/70 p-10 backdrop-blur-md transition hover:border-accent/40"
+            className="relative rounded-3xl border border-white/[0.08] bg-card/70 p-10 backdrop-blur-md transition hover:border-accent/40"
           >
+            <ServiceBackground slug={large.slug} />
             <div className="flex size-12 items-center justify-center rounded-2xl border border-accent/35 bg-accent/10 text-2xl">
               {large.icon}
             </div>
@@ -68,8 +102,9 @@ export function ServicesTeaser({ services }: { services: Service[] }) {
             <Link
               key={service._id}
               href={`/services/${service.slug}`}
-              className="rounded-2xl border border-white/[0.08] bg-card/70 p-6 backdrop-blur-md transition hover:border-accent/40"
+              className="relative rounded-2xl border border-white/[0.08] bg-card/70 p-6 backdrop-blur-md transition hover:border-accent/40"
             >
+              <ServiceBackground slug={service.slug} />
               <div className="text-xl">{service.icon}</div>
               <p className="mt-9 font-display text-lg font-bold text-foreground">{service.title}</p>
               {service.summary && (

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Mail, MapPin, Phone } from "lucide-react";
 
@@ -48,7 +49,8 @@ export function SiteFooter({
     <footer className="border-t border-white/[0.06] bg-surface">
       <div className="mx-auto grid max-w-6xl grid-cols-1 gap-12 px-6 py-20 sm:grid-cols-2 lg:grid-cols-4">
         <div>
-          <div className="flex items-baseline gap-2">
+          <div className="flex items-center gap-2">
+            <Image src="/images/brand/starkwood-logo.png" alt="" width={32} height={32} className="rounded-full" />
             <span className="font-display text-lg font-bold text-accent">Starkwood</span>
             <span className="text-accent">·</span>
             <span className="font-display text-[11px] font-semibold tracking-[0.2em] text-foreground/50">

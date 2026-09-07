@@ -1,6 +1,7 @@
 import { Hero } from "@/components/home/hero";
 import { ServicesTeaser } from "@/components/home/services-teaser";
 import { UpcomingEventsSection } from "@/components/home/upcoming-events-section";
+import { MovieSpotlight } from "@/components/home/movie-spotlight";
 import { RunSheet } from "@/components/home/run-sheet";
 import { Stats } from "@/components/home/stats";
 import { PastProjectsSection } from "@/components/home/past-projects-section";
@@ -42,6 +43,7 @@ export default async function HomePage() {
       <div className="relative -mt-16 sm:-mt-20">
         <UpcomingEventsSection events={upcoming} />
       </div>
+      <MovieSpotlight />
       <ServicesTeaser services={services} />
       <RunSheet events={allEvents} />
       <Stats />

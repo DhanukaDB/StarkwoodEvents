@@ -9,6 +9,11 @@ const FALLBACK_IMAGES = Array.from(
   (_, i) => `/images/recent-work/figma-${i + 1}.jpg`,
 );
 
+// Real event photos not yet uploaded as the event's coverImage in Sanity — keyed by slug.
+const REAL_PHOTO_OVERRIDES: Record<string, string> = {
+  "ru-sanda-rae-finale-tour-2024": "/images/recent-work/ru-sanda-rae-real.jpg",
+};
+
 export function PastProjectsSection({ events }: { events: EventSummary[] }) {
   if (events.length === 0) return null;
 
@@ -36,9 +41,11 @@ export function PastProjectsSection({ events }: { events: EventSummary[] }) {
       <div className="mt-12 columns-1 gap-6 sm:columns-2 lg:columns-3 [&>*]:mb-6 [&>*]:break-inside-avoid">
         {items.map((event, i) => {
           const imageSrc =
+            REAL_PHOTO_OVERRIDES[event.slug] ||
             (event.coverImage
               ? urlFor(event.coverImage).width(700).auto("format").url()
-              : event.coverImageUrl) || FALLBACK_IMAGES[i % FALLBACK_IMAGES.length];
+              : event.coverImageUrl) ||
+            FALLBACK_IMAGES[i % FALLBACK_IMAGES.length];
 
           return (
             <Link

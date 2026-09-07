@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
@@ -19,7 +20,8 @@ export function SiteHeader({ phone }: { phone: string }) {
   return (
     <header className="sticky top-0 z-50 border-b border-white/[0.06] bg-background/85 backdrop-blur-md">
       <div className="mx-auto flex h-20 max-w-6xl items-center justify-between px-6">
-        <Link href="/" aria-label="Starkwood" className="flex items-baseline gap-2 whitespace-nowrap">
+        <Link href="/" aria-label="Starkwood" className="flex items-center gap-2 whitespace-nowrap">
+          <Image src="/images/brand/starkwood-logo.png" alt="" width={36} height={36} className="rounded-full" />
           <span className="font-display text-lg font-bold text-accent">Starkwood</span>
           <span className="text-accent">·</span>
           <span className="font-display text-[11px] font-semibold tracking-[0.2em] text-foreground/50">

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { MapPin, CalendarDays, Ticket } from "lucide-react";
 import { EmptyState } from "@/components/empty-state";
 import { formatEventDate } from "@/lib/format-date";
@@ -16,6 +17,14 @@ function getCountdown(targetIso: string) {
     seconds: totalSeconds % 60,
   };
 }
+
+// Temporary per-event overrides until this data lives in Sanity — keyed by slug.
+const EVENT_OVERRIDES: Record<string, { logo?: string; ticketUrl?: string }> = {
+  "naadha-gama-melbourne-2026": {
+    logo: "/images/next-up/naadha-gama-logo.jpg",
+    ticketUrl: "https://premier.ticketek.com.au/shows/show.aspx?sh=NGAPLVSM26",
+  },
+};
 
 function CountdownTile({ value, label }: { value: number; label: string }) {
   return (
@@ -50,14 +59,28 @@ export function UpcomingEventsSection({ events }: { events: EventSummary[] }) {
     );
   }
 
+  const override = EVENT_OVERRIDES[event.slug];
+  const ticketHref = event.ticketUrl || override?.ticketUrl || `/events/${event.slug}`;
+
   return (
     <section className="mx-auto max-w-6xl px-6">
       <div className="overflow-hidden rounded-3xl border border-white/[0.08] bg-card/70 p-6 backdrop-blur-md sm:p-12">
         <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
           <div>
-            <span className="inline-block rounded-full border border-accent/35 bg-accent/10 px-4 py-1 text-xs font-semibold text-accent-2">
-              Next up
-            </span>
+            <div className="flex items-center gap-3">
+              <span className="inline-block rounded-full border border-accent/35 bg-accent/10 px-4 py-1 text-xs font-semibold text-accent-2">
+                Next up
+              </span>
+              {override?.logo && (
+                <Image
+                  src={override.logo}
+                  alt={`${event.title} logo`}
+                  width={96}
+                  height={48}
+                  className="h-7 w-auto rounded-sm object-contain"
+                />
+              )}
+            </div>
             <h2 className="mt-6 font-display text-4xl font-bold text-foreground sm:text-[44px]">
               {event.title}
             </h2>
@@ -81,16 +104,28 @@ export function UpcomingEventsSection({ events }: { events: EventSummary[] }) {
             </div>
 
             <a
-              href={`/events/${event.slug}`}
+              href={ticketHref}
+              target={ticketHref.startsWith("http") ? "_blank" : undefined}
+              rel={ticketHref.startsWith("http") ? "noopener noreferrer" : undefined}
               className="mt-8 inline-flex items-center gap-2 rounded-full bg-accent px-8 py-4 text-base font-semibold text-accent-foreground shadow-[0_10px_15px_rgba(197,139,56,0.35)] transition hover:brightness-110"
             >
               <Ticket className="size-[18px]" />
-              View event
+              {ticketHref.startsWith("http") ? "Get tickets" : "View event"}
             </a>
           </div>
 
           {countdown && (
-            <div className="rounded-2xl border-t border-white/10 pt-8 lg:border-l lg:border-t-0 lg:pl-10 lg:pt-0">
+            <div className="relative overflow-hidden rounded-2xl border-t border-white/10 pt-8 lg:border-l lg:border-t-0 lg:pl-10 lg:pt-0">
+              <div className="pointer-events-none absolute inset-0 -z-10">
+                <Image
+                  src="/images/next-up/sidney-myer-music-bowl.jpg"
+                  alt="Aerial view of the Sidney Myer Music Bowl, the venue for Naadha Gama"
+                  fill
+                  className="object-cover opacity-80"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-background via-[#2a1608]/55 to-[#e5a244]/15" />
+                <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-[#c58b38]/20" />
+              </div>
               <p className="text-xs font-extrabold tracking-[0.2em] text-foreground/45">Doors open in</p>
               <div className="mt-4 grid grid-cols-4 gap-3">
                 <CountdownTile value={countdown.days} label="Days" />

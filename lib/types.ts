@@ -12,6 +12,7 @@ export interface EventSummary {
   /** Raw Sanity image object — pass through `urlFor()` for an optimized, sized URL. */
   coverImage?: SanityImageSource;
   status: "upcoming" | "past";
+  ticketUrl?: string;
 }
 
 export interface SponsorRef {
