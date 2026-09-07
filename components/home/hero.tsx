@@ -9,8 +9,8 @@ export function Hero({ headline, subheadline }: { headline: string; subheadline:
     <section className="relative overflow-hidden">
       <div className="absolute inset-0">
         <Image
-          src="/hero-bg.jpg"
-          alt="A packed Starkwood Events concert crowd under confetti and stage pyrotechnics"
+          src="/hero-bg-gala.jpg"
+          alt="An elegant Starkwood Events gala dinner under string lights, with a live band on stage"
           fill
           priority
           className="object-cover"
