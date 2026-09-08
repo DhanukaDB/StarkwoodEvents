@@ -2,7 +2,7 @@ import { groq } from "next-sanity";
 
 export const upcomingEventsQuery = groq`
   *[_type == "event" && status == "upcoming"] | order(startDate asc) {
-    _id, title, "slug": slug.current, venue, startDate, endDate, summary, status, ticketUrl,
+    _id, title, "slug": slug.current, venue, startDate, endDate, summary, status, ticketUrl, infoUrl,
     "coverImageUrl": coverImage.asset->url,
     coverImage
   }

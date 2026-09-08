@@ -13,6 +13,7 @@ export interface EventSummary {
   coverImage?: SanityImageSource;
   status: "upcoming" | "past";
   ticketUrl?: string;
+  infoUrl?: string;
 }
 
 export interface SponsorRef {

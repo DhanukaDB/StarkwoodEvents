@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { MapPin, CalendarDays, Ticket } from "lucide-react";
+import { MapPin, CalendarDays, Ticket, ExternalLink } from "lucide-react";
 import { EmptyState } from "@/components/empty-state";
 import { formatEventDate } from "@/lib/format-date";
 import type { EventSummary } from "@/lib/types";
@@ -19,10 +19,14 @@ function getCountdown(targetIso: string) {
 }
 
 // Temporary per-event overrides until this data lives in Sanity — keyed by slug.
-const EVENT_OVERRIDES: Record<string, { logo?: string; ticketUrl?: string }> = {
+const EVENT_OVERRIDES: Record<
+  string,
+  { logo?: string; ticketUrl?: string; infoUrl?: string }
+> = {
   "naadha-gama-melbourne-2026": {
     logo: "/images/next-up/naadha-gama-logo.jpg",
     ticketUrl: "https://premier.ticketek.com.au/shows/show.aspx?sh=NGAPLVSM26",
+    infoUrl: "https://naadhagama.lk/melbourne26",
   },
 };
 
@@ -61,10 +65,22 @@ export function UpcomingEventsSection({ events }: { events: EventSummary[] }) {
 
   const override = EVENT_OVERRIDES[event.slug];
   const ticketHref = event.ticketUrl || override?.ticketUrl || `/events/${event.slug}`;
+  const infoHref = event.infoUrl || override?.infoUrl;
 
   return (
     <section className="mx-auto max-w-6xl px-6">
-      <div className="overflow-hidden rounded-3xl border border-white/[0.08] bg-card/70 p-6 backdrop-blur-md sm:p-12">
+      <div className="relative overflow-hidden rounded-3xl border border-white/[0.08] p-6 sm:p-12">
+        <div className="absolute inset-0 -z-10">
+          <Image
+            src="/images/next-up/sidney-myer-music-bowl.jpg"
+            alt="Aerial view of the Sidney Myer Music Bowl, the venue for Naadha Gama"
+            fill
+            priority
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/35" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-[#c58b38]/10" />
+        </div>
         <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
           <div>
             <div className="flex items-center gap-3">
@@ -103,29 +119,32 @@ export function UpcomingEventsSection({ events }: { events: EventSummary[] }) {
               </div>
             </div>
 
-            <a
-              href={ticketHref}
-              target={ticketHref.startsWith("http") ? "_blank" : undefined}
-              rel={ticketHref.startsWith("http") ? "noopener noreferrer" : undefined}
-              className="mt-8 inline-flex items-center gap-2 rounded-full bg-accent px-8 py-4 text-base font-semibold text-accent-foreground shadow-[0_10px_15px_rgba(197,139,56,0.35)] transition hover:brightness-110"
-            >
-              <Ticket className="size-[18px]" />
-              {ticketHref.startsWith("http") ? "Get tickets" : "View event"}
-            </a>
+            <div className="mt-8 flex flex-wrap gap-4">
+              <a
+                href={ticketHref}
+                target={ticketHref.startsWith("http") ? "_blank" : undefined}
+                rel={ticketHref.startsWith("http") ? "noopener noreferrer" : undefined}
+                className="inline-flex items-center gap-2 rounded-full bg-accent px-8 py-4 text-base font-semibold text-accent-foreground shadow-[0_10px_15px_rgba(197,139,56,0.35)] transition hover:brightness-110"
+              >
+                <Ticket className="size-[18px]" />
+                {ticketHref.startsWith("http") ? "Get tickets" : "View event"}
+              </a>
+              {infoHref && (
+                <a
+                  href={infoHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.03] px-8 py-4 text-base font-semibold text-foreground transition hover:border-white/30"
+                >
+                  <ExternalLink className="size-[18px]" />
+                  Event details
+                </a>
+              )}
+            </div>
           </div>
 
           {countdown && (
-            <div className="relative overflow-hidden rounded-2xl border-t border-white/10 pt-8 lg:border-l lg:border-t-0 lg:pl-10 lg:pt-0">
-              <div className="pointer-events-none absolute inset-0 -z-10">
-                <Image
-                  src="/images/next-up/sidney-myer-music-bowl.jpg"
-                  alt="Aerial view of the Sidney Myer Music Bowl, the venue for Naadha Gama"
-                  fill
-                  className="object-cover opacity-80"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-background via-[#2a1608]/55 to-[#e5a244]/15" />
-                <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-[#c58b38]/20" />
-              </div>
+            <div className="rounded-2xl border-t border-white/10 bg-background/40 p-6 backdrop-blur-sm lg:border-l lg:border-t-0 lg:pl-10">
               <p className="text-xs font-extrabold tracking-[0.2em] text-foreground/45">Doors open in</p>
               <div className="mt-4 grid grid-cols-4 gap-3">
                 <CountdownTile value={countdown.days} label="Days" />
