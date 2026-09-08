@@ -40,7 +40,7 @@ export default async function HomePage() {
           "Starkwood is a Melbourne event management company. Full-service planning and production: concept, permits, suppliers, run sheets and on-the-day delivery for weddings, corporate, sports, charity, cultural, community and live events."
         }
       />
-      <div className="relative -mt-16 sm:-mt-20">
+      <div className="relative mt-8 sm:mt-10">
         <UpcomingEventsSection events={upcoming} />
       </div>
       <MovieSpotlight />

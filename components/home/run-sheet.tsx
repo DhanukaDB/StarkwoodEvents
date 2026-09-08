@@ -45,7 +45,7 @@ export function RunSheet({ events }: { events: RunSheetEvent[] }) {
             </p>
           </div>
 
-          <div className="flex rounded-full border border-white/[0.08] bg-white/[0.03] p-1">
+          <div className="flex flex-wrap gap-1 rounded-full border border-white/[0.08] bg-white/[0.03] p-1">
             {TABS.map((tab) => (
               <button
                 key={tab.key}
