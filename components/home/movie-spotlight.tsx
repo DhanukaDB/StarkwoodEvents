@@ -79,11 +79,13 @@ export function MovieSpotlight() {
           </div>
 
           <a
-            href="/contact"
+            href="https://auslankatickets.com/event/eda-raa-movie-australia/"
+            target="_blank"
+            rel="noopener noreferrer"
             className="mt-8 inline-flex items-center gap-2 rounded-full bg-accent px-8 py-4 text-base font-semibold text-accent-foreground shadow-[0_10px_15px_rgba(197,139,56,0.35)] transition hover:brightness-110"
           >
             <Ticket className="size-[18px]" />
-            Enquire about tickets
+            Get tickets
           </a>
         </div>
       </div>
