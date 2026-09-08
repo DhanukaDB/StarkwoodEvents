@@ -43,3 +43,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# large local-only archives
+Imgs/OneDrive_2026-09-02.zip
