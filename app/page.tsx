@@ -16,15 +16,25 @@ import {
 } from "@/lib/queries";
 import type { EventSummary, Service, SiteSettings } from "@/lib/types";
 import { DEFAULT_PHONE, DEFAULT_EMAIL } from "@/lib/site-config";
+import { mergeStaticEvents } from "@/lib/static-events";
 
 export default async function HomePage() {
-  const [upcoming, past, allEvents, services, settings] = await Promise.all([
+  const [upcomingCms, past, allEventsCms, services, settings] = await Promise.all([
     safeFetch<EventSummary[]>(upcomingEventsQuery, "event", []),
     safeFetch<EventSummary[]>(pastEventsQuery, "event", []),
     safeFetch<(EventSummary & { category?: string })[]>(allEventsQuery, "event", []),
     safeFetch<Service[]>(servicesQuery, "service", []),
     safeFetch<SiteSettings | null>(siteSettingsQuery, "siteSettings", null),
   ]);
+
+  // Not-yet-published-in-Sanity events, merged in so they show immediately —
+  // see lib/static-events.ts for why and how to remove an entry.
+  const upcoming = mergeStaticEvents(upcomingCms).sort((a, b) =>
+    (a.startDate || "").localeCompare(b.startDate || ""),
+  );
+  const allEvents = mergeStaticEvents(allEventsCms).sort((a, b) =>
+    (b.startDate || "").localeCompare(a.startDate || ""),
+  );
 
   const phone = settings?.phone || DEFAULT_PHONE;
   const email = settings?.email || DEFAULT_EMAIL;

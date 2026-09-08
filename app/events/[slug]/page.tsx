@@ -6,15 +6,24 @@ import { eventBySlugQuery, eventSlugsQuery } from "@/lib/queries";
 import { formatEventDate } from "@/lib/format-date";
 import { urlFor } from "@/sanity/image";
 import type { EventDetail } from "@/lib/types";
+import { STATIC_EVENTS } from "@/lib/static-events";
+
+function findStaticEvent(slug: string): EventDetail | null {
+  const match = STATIC_EVENTS.find((e) => e.slug === slug);
+  return match ? { ...match } : null;
+}
 
 export async function generateStaticParams() {
   const slugs = await safeFetch<string[]>(eventSlugsQuery, "event", []);
-  return slugs.map((slug) => ({ slug }));
+  const staticSlugs = STATIC_EVENTS.map((e) => e.slug);
+  return [...new Set([...slugs, ...staticSlugs])].map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const event = await safeFetch<EventDetail | null>(eventBySlugQuery, "event", null, { slug });
+  const event =
+    (await safeFetch<EventDetail | null>(eventBySlugQuery, "event", null, { slug })) ||
+    findStaticEvent(slug);
   if (!event) return {};
   return { title: `${event.title} | Starkwood Events` };
 }
@@ -25,7 +34,9 @@ export default async function EventDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const event = await safeFetch<EventDetail | null>(eventBySlugQuery, "event", null, { slug });
+  const event =
+    (await safeFetch<EventDetail | null>(eventBySlugQuery, "event", null, { slug })) ||
+    findStaticEvent(slug);
 
   if (!event) notFound();
 
