@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { filterEventsByCategory } from "../filter-events";
+import { filterEventsByCategory, filterEventsByStatus } from "../filter-events";
 import type { EventSummary } from "../types";
 
 const events = [
@@ -20,5 +20,19 @@ describe("filterEventsByCategory", () => {
 
   it("returns an empty array when no events match", () => {
     expect(filterEventsByCategory(events, "Expo")).toEqual([]);
+  });
+});
+
+describe("filterEventsByStatus", () => {
+  it("returns all events when status is \"all\"", () => {
+    expect(filterEventsByStatus(events, "all")).toHaveLength(3);
+  });
+
+  it("returns only upcoming events", () => {
+    expect(filterEventsByStatus(events, "upcoming").map((e) => e._id)).toEqual(["1"]);
+  });
+
+  it("returns only past events", () => {
+    expect(filterEventsByStatus(events, "past").map((e) => e._id)).toEqual(["2", "3"]);
   });
 });

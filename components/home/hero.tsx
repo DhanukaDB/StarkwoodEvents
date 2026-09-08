@@ -38,7 +38,7 @@ export function Hero({ headline, subheadline }: { headline: string; subheadline:
               <ArrowRight className="size-[18px]" />
             </Link>
             <Link
-              href="/events"
+              href="/events?status=upcoming"
               className="flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.03] px-8 py-4 text-base font-semibold text-foreground transition hover:border-white/30"
             >
               <Camera className="size-[18px]" />

@@ -9,3 +9,13 @@ export function filterEventsByCategory<T extends CategorizedEvent>(
   if (category === "All") return events;
   return events.filter((e) => e.category === category);
 }
+
+export type StatusFilter = "all" | "upcoming" | "past";
+
+export function filterEventsByStatus<T extends EventSummary>(
+  events: T[],
+  status: StatusFilter,
+): T[] {
+  if (status === "all") return events;
+  return events.filter((e) => e.status === status);
+}
