@@ -1,5 +1,8 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
-import { Film, MapPin, Ticket } from "lucide-react";
+import { ChevronDown, Film, MapPin, Ticket } from "lucide-react";
 
 const SCREENINGS = [
   { venue: "Knox", city: "Melbourne", time: "6:00 PM", soldOut: true },
@@ -22,6 +25,8 @@ const NATIONAL_SCREENINGS = [
 ];
 
 export function MovieSpotlight() {
+  const [showTheatres, setShowTheatres] = useState(false);
+
   return (
     <section className="mx-auto max-w-6xl px-6 py-24">
       <div className="grid gap-10 overflow-hidden rounded-3xl border border-white/[0.08] bg-card/70 p-6 backdrop-blur-md sm:p-10 lg:grid-cols-[280px_1fr] lg:items-start">
@@ -92,35 +97,54 @@ export function MovieSpotlight() {
           </div>
 
           <div className="mt-8">
-            <p className="text-xs font-extrabold tracking-[0.2em] text-foreground/45">
-              National screenings
-            </p>
-            <div className="mt-4 overflow-x-auto rounded-xl border border-white/10">
-              <table className="w-full min-w-[480px] text-left text-sm">
-                <thead>
-                  <tr className="border-b border-white/10 text-xs font-extrabold uppercase tracking-wider text-foreground/45">
-                    <th className="px-4 py-3 font-extrabold">Date</th>
-                    <th className="px-4 py-3 font-extrabold">Cinema</th>
-                    <th className="px-4 py-3 font-extrabold">Details</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {NATIONAL_SCREENINGS.map((s, i) => (
-                    <tr
-                      key={`${s.date}-${s.cinema}-${i}`}
-                      className="border-b border-white/[0.06] last:border-0 odd:bg-white/[0.02]"
-                    >
-                      <td className="whitespace-nowrap px-4 py-3 font-mono text-accent-2">{s.date}</td>
-                      <td className="px-4 py-3 font-medium text-foreground">
-                        {s.starred && <span className="mr-1 text-accent-2">★</span>}
-                        {s.cinema}
-                      </td>
-                      <td className="px-4 py-3 text-foreground/70">{s.details || "Details to be confirmed"}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            <button
+              type="button"
+              onClick={() => setShowTheatres((prev) => !prev)}
+              aria-expanded={showTheatres}
+              className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.03] px-5 py-2.5 text-sm font-semibold text-foreground transition hover:border-accent/40"
+            >
+              <MapPin className="size-4" />
+              {showTheatres ? "Hide theatres" : "See theatres"}
+              <ChevronDown
+                className={`size-4 text-foreground/50 transition-transform ${showTheatres ? "rotate-180" : ""}`}
+              />
+            </button>
+
+            {showTheatres && (
+              <div className="mt-4">
+                <p className="text-xs font-extrabold tracking-[0.2em] text-foreground/45">
+                  National screenings
+                </p>
+                <div className="mt-4 overflow-x-auto rounded-xl border border-white/10">
+                  <table className="w-full min-w-[480px] text-left text-sm">
+                    <thead>
+                      <tr className="border-b border-white/10 text-xs font-extrabold uppercase tracking-wider text-foreground/45">
+                        <th className="px-4 py-3 font-extrabold">Date</th>
+                        <th className="px-4 py-3 font-extrabold">Cinema</th>
+                        <th className="px-4 py-3 font-extrabold">Details</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {NATIONAL_SCREENINGS.map((s, i) => (
+                        <tr
+                          key={`${s.date}-${s.cinema}-${i}`}
+                          className="border-b border-white/[0.06] last:border-0 odd:bg-white/[0.02]"
+                        >
+                          <td className="whitespace-nowrap px-4 py-3 font-mono text-accent-2">{s.date}</td>
+                          <td className="px-4 py-3 font-medium text-foreground">
+                            {s.starred && <span className="mr-1 text-accent-2">★</span>}
+                            {s.cinema}
+                          </td>
+                          <td className="px-4 py-3 text-foreground/70">
+                            {s.details || "Details to be confirmed"}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
           </div>
 
           <a
