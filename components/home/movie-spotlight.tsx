@@ -8,6 +8,19 @@ const SCREENINGS = [
   { venue: "South Morang", city: "Melbourne", time: "6:00 PM", soldOut: false },
 ];
 
+const NATIONAL_SCREENINGS = [
+  { date: "27th Sept", cinema: "Blacktown", details: "Blacktown | Cinema 6 (125 seats)" },
+  { date: "27th Sept", cinema: "Carousel Perth", details: "Carousel | Cinema 15 (134 seats)" },
+  { date: "4th Oct", cinema: "Belconnen Canberra", details: "Belconnen | Cinema 1 (77 seats)" },
+  { date: "4th Oct", cinema: "Broadmeadows", details: "Broadmeadows | Cinema 2 (104 seats)" },
+  { date: "4th Oct", cinema: "Watergardens", details: "Watergardens | Cinema 5 (111 seats)" },
+  { date: "11th Oct", cinema: "Chatswood", details: "Chatswood Mandarin | Cinema 8 (91 seats)" },
+  { date: "11th Oct", cinema: "Blacktown", details: "Blacktown | Cinema 6 (125 seats)" },
+  { date: "11th Oct", cinema: "Carousel", details: "Carousel | Cinema 15 (134 seats)" },
+  { date: "18th Oct", cinema: "Blacktown", details: "Blacktown | Cinema 6 (125 seats)" },
+  { date: "18th Oct", cinema: "Regal (Adelaide)", details: "", starred: true },
+];
+
 export function MovieSpotlight() {
   return (
     <section className="mx-auto max-w-6xl px-6 py-24">
@@ -75,6 +88,38 @@ export function MovieSpotlight() {
                   )}
                 </div>
               ))}
+            </div>
+          </div>
+
+          <div className="mt-8">
+            <p className="text-xs font-extrabold tracking-[0.2em] text-foreground/45">
+              National screenings
+            </p>
+            <div className="mt-4 overflow-x-auto rounded-xl border border-white/10">
+              <table className="w-full min-w-[480px] text-left text-sm">
+                <thead>
+                  <tr className="border-b border-white/10 text-xs font-extrabold uppercase tracking-wider text-foreground/45">
+                    <th className="px-4 py-3 font-extrabold">Date</th>
+                    <th className="px-4 py-3 font-extrabold">Cinema</th>
+                    <th className="px-4 py-3 font-extrabold">Details</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {NATIONAL_SCREENINGS.map((s, i) => (
+                    <tr
+                      key={`${s.date}-${s.cinema}-${i}`}
+                      className="border-b border-white/[0.06] last:border-0 odd:bg-white/[0.02]"
+                    >
+                      <td className="whitespace-nowrap px-4 py-3 font-mono text-accent-2">{s.date}</td>
+                      <td className="px-4 py-3 font-medium text-foreground">
+                        {s.starred && <span className="mr-1 text-accent-2">★</span>}
+                        {s.cinema}
+                      </td>
+                      <td className="px-4 py-3 text-foreground/70">{s.details || "Details to be confirmed"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
 
